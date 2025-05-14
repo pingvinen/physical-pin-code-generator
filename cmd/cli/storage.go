@@ -11,8 +11,9 @@ type Storage struct {
 }
 
 type CodesEntry struct {
-	Name      string
-	Frequency float32
+	Name string
+	// Code usage per week
+	Frequency int
 	Length    int
 	Code      string
 }
