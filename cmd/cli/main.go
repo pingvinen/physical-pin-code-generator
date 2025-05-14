@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 	"path/filepath"
+	"physical-pin-code-generator/cmd/cli/generator"
 	"physical-pin-code-generator/cmd/cli/histogram"
+	"physical-pin-code-generator/cmd/cli/storage"
 	"runtime"
 	"strings"
 )
@@ -16,7 +18,7 @@ func main() {
 
 	log.Printf("I will use the file %s for codes\n", codesFileAbs)
 
-	payload, err := load(codesFileAbs)
+	payload, err := storage.Load(codesFileAbs)
 	if err != nil {
 		panic(err)
 	}
@@ -25,6 +27,15 @@ func main() {
 
 	h := getHistogram(&payload)
 	h.Print()
+
+	generator.GenerateMissingCodes(&payload, h)
+
+	h.Print()
+
+	err = storage.Save(&payload, codesFileAbs)
+	if err != nil {
+		panic(err)
+	}
 
 	log.Println("All done")
 }
@@ -35,7 +46,7 @@ func getSourceDir() string {
 	return dir
 }
 
-func getHistogram(storage *Storage) *histogram.Histogram {
+func getHistogram(storage *storage.Storage) *histogram.Histogram {
 	h := histogram.New()
 
 	// add a bin for each allowed key

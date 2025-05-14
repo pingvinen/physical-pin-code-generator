@@ -1,0 +1,29 @@
+{
+  "keys": "0123456789",
+  "codes": [
+    {
+      "name": "lovely_wife",
+      "frequency": 14,
+      "length": 5,
+      "code": ""
+    },
+    {
+      "name": "meh_husband",
+      "frequency": 14,
+      "length": 5,
+      "code": ""
+    },
+    {
+      "name": "1st_child",
+      "frequency": 7,
+      "length": 4,
+      "code": ""
+    },
+    {
+      "name": "wife_parents",
+      "frequency": 1,
+      "length": 4,
+      "code": ""
+    }
+  ]
+}

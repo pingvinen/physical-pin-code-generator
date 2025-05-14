@@ -8,7 +8,9 @@ import (
 
 // Histogram with simple string bins
 type Histogram struct {
-	Bins map[string]int
+	Bins    map[string]int
+	Lowest  int
+	Highest int
 }
 
 func New() *Histogram {
@@ -25,11 +27,26 @@ func (h *Histogram) Add(bin string) {
 // AddInc a bin (or increase the count by increase)
 func (h *Histogram) AddInc(bin string, increase int) {
 	h.Bins[bin] += increase
+	h.updateStats()
 }
 
 // Get the count for a bin
 func (h *Histogram) Get(bin string) int {
 	return h.Bins[bin]
+}
+
+func (h *Histogram) updateStats() {
+	h.Lowest = 1<<31 - 1 // max int
+	h.Highest = 0
+
+	for _, count := range h.Bins {
+		if count < h.Lowest {
+			h.Lowest = count
+		}
+		if count > h.Highest {
+			h.Highest = count
+		}
+	}
 }
 
 // Print the histogram to stdout
@@ -47,4 +64,7 @@ func (h *Histogram) Print() {
 		bar := strings.Repeat("=", count)
 		fmt.Printf("%-3s %3d %s\n", label, count, bar)
 	}
+
+	fmt.Printf("Lowest: %d\n", h.Lowest)
+	fmt.Printf("Highest: %d\n", h.Highest)
 }

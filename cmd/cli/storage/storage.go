@@ -1,4 +1,4 @@
-package main
+package storage
 
 import (
 	"encoding/json"
@@ -18,7 +18,7 @@ type CodesEntry struct {
 	Code      string
 }
 
-func load(codesFileAbs string) (Storage, error) {
+func Load(codesFileAbs string) (Storage, error) {
 	theJson, err := os.ReadFile(codesFileAbs)
 	if err != nil {
 		return Storage{}, err
@@ -31,4 +31,18 @@ func load(codesFileAbs string) (Storage, error) {
 	}
 
 	return payload, nil
+}
+
+func Save(storage *Storage, codesFileAbs string) error {
+	theJson, err := json.MarshalIndent(storage, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(codesFileAbs, theJson, 0644)
+	if err != nil {
+		return err
+	}
+	
+	return nil
 }
